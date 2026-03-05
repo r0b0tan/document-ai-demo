@@ -1,0 +1,58 @@
+SERVICE AGREEMENT
+
+This Service Agreement ("Agreement") is entered into as of April 1, 2024
+("Effective Date") by and between:
+
+  Acme Software Solutions Ltd., a California corporation
+  ("Service Provider")
+
+and
+
+  Globex Corporation, an Illinois corporation
+  ("Client").
+
+1. SERVICES
+   Service Provider agrees to provide software development and consulting
+   services as described in Schedule A attached hereto ("Services").
+
+2. TERM
+   This Agreement commences on the Effective Date and continues for twelve
+   (12) months unless earlier terminated pursuant to Section 6.
+
+3. COMPENSATION
+   Client shall pay Service Provider USD 15,000 per month, invoiced on the
+   first business day of each month. Payment is due within thirty (30) days
+   of receipt of invoice.
+
+4. INTELLECTUAL PROPERTY
+   All work product created by Service Provider under this Agreement shall
+   be considered work-for-hire and shall become the exclusive property of
+   Client upon full payment of all fees.
+
+5. CONFIDENTIALITY
+   Each party agrees to keep confidential all proprietary information of the
+   other party and not to disclose it to any third party without prior
+   written consent.
+
+6. TERMINATION
+   Either party may terminate this Agreement upon thirty (30) days' written
+   notice. Client may terminate immediately for cause if Service Provider
+   materially breaches this Agreement and fails to cure such breach within
+   ten (10) days of written notice.
+
+7. GOVERNING LAW
+   This Agreement shall be governed by the laws of the State of California
+   without regard to its conflict-of-law provisions.
+
+8. ENTIRE AGREEMENT
+   This Agreement constitutes the entire agreement between the parties and
+   supersedes all prior negotiations, representations, or agreements.
+
+IN WITNESS WHEREOF, the parties have executed this Agreement as of the date
+first written above.
+
+ACME SOFTWARE SOLUTIONS LTD.         GLOBEX CORPORATION
+By: _________________________        By: _________________________
+Name: Alice Johnson                  Name: Homer Simpson
+Title: CEO                           Title: VP Engineering
+Date: April 1, 2024                  Date: April 1, 2024

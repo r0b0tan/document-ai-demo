@@ -1,0 +1,54 @@
+Jane Doe
+jane.doe@email.example | (555) 123-4567 | San Francisco, CA
+github.com/janedoe | linkedin.com/in/janedoe
+
+─────────────────────────────────────────────────────────────────
+SUMMARY
+─────────────────────────────────────────────────────────────────
+Full-stack software engineer with 6 years of experience building
+scalable web applications. Passionate about developer tooling,
+distributed systems, and clean API design.
+
+─────────────────────────────────────────────────────────────────
+SKILLS
+─────────────────────────────────────────────────────────────────
+Languages:   Python, TypeScript, Go, SQL
+Frontend:    React, Next.js, Vite, Tailwind CSS
+Backend:     FastAPI, Node.js, PostgreSQL, Redis
+DevOps:      Docker, Kubernetes, GitHub Actions, AWS
+Other:       REST, GraphQL, gRPC, OpenTelemetry
+
+─────────────────────────────────────────────────────────────────
+EXPERIENCE
+─────────────────────────────────────────────────────────────────
+Senior Software Engineer — TechCorp Inc., San Francisco, CA
+Jan 2022 – Present
+• Led migration of monolith to microservices, reducing P99 latency
+  by 40%.
+• Built internal document processing pipeline handling 50k docs/day
+  using Python, Kafka, and PostgreSQL.
+• Mentored 3 junior engineers and ran bi-weekly architecture reviews.
+
+Software Engineer — Startup Labs, Remote
+Jun 2019 – Dec 2021
+• Developed customer-facing React dashboard with real-time analytics
+  served via WebSocket.
+• Designed and maintained REST API consumed by web and mobile clients.
+• Reduced CI pipeline run time from 18 min to 4 min via parallelisation.
+
+Junior Developer — Digital Agency Co., Austin, TX
+Aug 2018 – May 2019
+• Delivered WordPress and React projects for SMB clients.
+• Integrated payment gateways (Stripe, PayPal) and third-party APIs.
+
+─────────────────────────────────────────────────────────────────
+EDUCATION
+─────────────────────────────────────────────────────────────────
+B.Sc. Computer Science — University of Texas at Austin, 2018
+GPA: 3.8 / 4.0 | Dean's List (3 semesters)
+
+─────────────────────────────────────────────────────────────────
+CERTIFICATIONS
+─────────────────────────────────────────────────────────────────
+• AWS Certified Solutions Architect – Associate (2023)
+• Google Professional Cloud Developer (2022)

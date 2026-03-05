@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <InvoiceNumber>INV-2024-0042</InvoiceNumber>
+  <InvoiceDate>2024-03-15</InvoiceDate>
+
+  <Vendor>
+    <Name>Acme Software Solutions Ltd.</Name>
+    <Address>123 Tech Park, San Francisco, CA 94105</Address>
+    <Email>billing@acmesoftware.example</Email>
+    <VATNumber>US-94-1234567</VATNumber>
+  </Vendor>
+
+  <Customer>
+    <Name>Globex Corporation</Name>
+    <Address>742 Evergreen Terrace, Springfield, IL 62701</Address>
+    <ContactPerson>Homer Simpson</ContactPerson>
+  </Customer>
+
+  <LineItems>
+    <Item>
+      <Description>Software License — Enterprise Plan (12 months)</Description>
+      <Quantity>1</Quantity>
+      <UnitPrice>4800.00</UnitPrice>
+      <Total>4800.00</Total>
+    </Item>
+    <Item>
+      <Description>Priority Support Package</Description>
+      <Quantity>1</Quantity>
+      <UnitPrice>1200.00</UnitPrice>
+      <Total>1200.00</Total>
+    </Item>
+    <Item>
+      <Description>Onboarding &amp; Training (8 hours)</Description>
+      <Quantity>8</Quantity>
+      <UnitPrice>150.00</UnitPrice>
+      <Total>1200.00</Total>
+    </Item>
+  </LineItems>
+
+  <Subtotal>7200.00</Subtotal>
+  <TaxRate>0.10</TaxRate>
+  <TaxAmount>720.00</TaxAmount>
+  <TotalAmount>7920.00</TotalAmount>
+  <Currency>USD</Currency>
+
+  <PaymentTerms>Net 30</PaymentTerms>
+  <DueDate>2024-04-14</DueDate>
+  <BankDetails>
+    <BankName>First National Bank</BankName>
+    <AccountNumber>****-****-****-4321</AccountNumber>
+    <RoutingNumber>021000021</RoutingNumber>
+  </BankDetails>
+</Invoice>
