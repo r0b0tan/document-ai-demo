@@ -6,9 +6,10 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      // Forward /analyze and /health to the FastAPI backend
+      // Forward /analyze, /health, and /models to the FastAPI backend
       "/analyze": "http://localhost:8000",
       "/health": "http://localhost:8000",
+      "/models": "http://localhost:8000",
     },
   },
 });

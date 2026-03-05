@@ -9,6 +9,7 @@ Endpoints:
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
+import ollama
 from pipeline import run_pipeline
 from schemas import AnalyzeResponse
 
@@ -36,6 +37,24 @@ DEFAULT_MODEL = "mistral"
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+
+@app.get("/models")
+def list_models():
+    """Return names of locally available Ollama models."""
+    try:
+        response = ollama.list()
+        names = sorted(m.model.split(":")[0] for m in response.models)
+        # deduplicate (same base name with different tags)
+        seen = set()
+        unique = []
+        for n in names:
+            if n not in seen:
+                seen.add(n)
+                unique.append(n)
+        return {"models": unique}
+    except Exception:
+        return {"models": []}
 
 
 @app.post("/analyze", response_model=AnalyzeResponse)

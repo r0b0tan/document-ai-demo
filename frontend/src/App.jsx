@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { analyzeDocument } from "./api.js";
+import { useState, useEffect } from "react";
+import { analyzeDocument, fetchModels } from "./api.js";
 import TopBar from "./components/TopBar.jsx";
 import UploadOverlay from "./components/UploadOverlay.jsx";
 import Workspace from "./components/Workspace.jsx";
 import "./App.css";
 
-const MODELS = ["mistral", "llama3", "phi3", "gemma"];
+const FALLBACK_MODELS = ["mistral", "llama3", "phi3", "gemma"];
 
 export default function App() {
   const [result, setResult] = useState(null);
@@ -13,6 +13,16 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [model, setModel] = useState("mistral");
+  const [models, setModels] = useState(FALLBACK_MODELS);
+
+  useEffect(() => {
+    fetchModels().then((m) => {
+      if (m.length > 0) {
+        setModels(m);
+        if (!m.includes(model)) setModel(m[0]);
+      }
+    });
+  }, []);
 
   async function handleFileSelect(selectedFile) {
     setFile(selectedFile);
@@ -39,7 +49,7 @@ export default function App() {
     <div className="app">
       <TopBar
         model={model}
-        models={MODELS}
+        models={models}
         onModelChange={setModel}
         onReset={handleReset}
         showReset={!!result || loading}
