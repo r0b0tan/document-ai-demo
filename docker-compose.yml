@@ -1,0 +1,45 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: docai-ollama
+    restart: unless-stopped
+    volumes:
+      - ollama_data:/root/.ollama
+    # GPU support — uncomment if your server has an NVIDIA GPU:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: docai-backend
+    restart: unless-stopped
+    depends_on:
+      - ollama
+    env_file: .env
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    ports:
+      - "127.0.0.1:8000:8000"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_API_KEY: ${API_KEY:-}
+    container_name: docai-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "127.0.0.1:3000:80"
+
+volumes:
+  ollama_data:
