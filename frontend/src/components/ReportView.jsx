@@ -5,6 +5,30 @@ import LineItemsTable from "./FieldRenderers/LineItemsTable.jsx";
 import ExperienceList from "./FieldRenderers/ExperienceList.jsx";
 import "./ReportView.css";
 
+/* ── Export helpers ──────────────────────────────────────────────── */
+function downloadFile(content, filename, mime) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function jsonToXml(obj, root = "document") {
+  function convert(key, val) {
+    if (val === null || val === undefined) return `<${key}/>`;
+    if (Array.isArray(val))
+      return val.map((item) => convert("item", item)).join("\n");
+    if (typeof val === "object")
+      return `<${key}>\n${Object.entries(val).map(([k, v]) => convert(k, v)).join("\n")}\n</${key}>`;
+    const escaped = String(val).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return `<${key}>${escaped}</${key}>`;
+  }
+  return `<?xml version="1.0" encoding="UTF-8"?>\n${convert(root, obj)}`;
+}
+
 /* ── Field lookup helpers ────────────────────────────────────────── */
 function norm(key) {
   return key.toLowerCase().replace(/[\s_-]/g, "");
@@ -301,7 +325,7 @@ function computeChips(document_type, data) {
   return chips;
 }
 
-function StatChips({ chips, loading }) {
+function StatChips({ chips, loading, onExportJson, onExportXml }) {
   if (loading) {
     return (
       <div className="stat-chips">
@@ -309,15 +333,20 @@ function StatChips({ chips, loading }) {
       </div>
     );
   }
-  if (!chips || chips.length === 0) return null;
   return (
     <div className="stat-chips">
-      {chips.map(({ label, value }) => (
-        <div key={label} className="stat-chip">
-          <span className="stat-chip-label">{label}</span>
-          <span className="stat-chip-value">{value}</span>
-        </div>
-      ))}
+      <div className="stat-chips-left">
+        {chips.map(({ label, value }) => (
+          <div key={label} className="stat-chip">
+            <span className="stat-chip-label">{label}</span>
+            <span className="stat-chip-value">{value}</span>
+          </div>
+        ))}
+      </div>
+      <div className="stat-chips-right">
+        <button className="export-btn" onClick={onExportJson}>Export JSON</button>
+        <button className="export-btn" onClick={onExportXml}>Export XML</button>
+      </div>
     </div>
   );
 }
@@ -328,12 +357,20 @@ function StatChips({ chips, loading }) {
 const TYPED = ["invoice", "resume", "contract"];
 
 export default function ReportView({ result, loading }) {
-  const { document_type, data, text_preview } = result;
+  const { document_type, data, text_preview, filename } = result;
   const chips = computeChips(document_type, data);
+
+  function exportJson() {
+    downloadFile(JSON.stringify(result, null, 2), `${filename || "export"}.json`, "application/json");
+  }
+
+  function exportXml() {
+    downloadFile(jsonToXml(result), `${filename || "export"}.xml`, "application/xml");
+  }
 
   return (
     <div className="report-view">
-      <StatChips chips={chips} loading={loading} />
+      <StatChips chips={chips} loading={loading} onExportJson={exportJson} onExportXml={exportXml} />
       {document_type === "invoice"  && <InvoiceReport  data={data} />}
       {document_type === "resume"   && <ResumeReport   data={data} />}
       {document_type === "contract" && <ContractReport data={data} />}

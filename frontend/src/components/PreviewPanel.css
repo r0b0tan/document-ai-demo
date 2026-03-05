@@ -194,7 +194,11 @@
 .preview-text-wrap {
   height: 100%;
   overflow: auto;
-  padding: 24px;
+  padding: 20px;
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  margin: 16px;
+  border: 1px solid var(--border);
 }
 
 .preview-text {
@@ -203,6 +207,7 @@
   line-height: 1.8;
   white-space: pre-wrap;
   word-break: break-word;
+  margin: 0;
 }
 
 .preview-empty {

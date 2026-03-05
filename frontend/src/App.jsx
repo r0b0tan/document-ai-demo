@@ -69,6 +69,9 @@ export default function App() {
           />
         )}
       </main>
+      <footer className="app-footer">
+        © 2026 Christoph Bauer
+      </footer>
     </div>
   );
 }
