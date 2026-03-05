@@ -12,47 +12,45 @@ const TYPE_META = {
 
 export default function AnalysisHeader({ result, fieldCount, splitMode, onSplitChange, previewCollapsed, onTogglePreview }) {
   const { filename, document_type, confidence } = result;
-  const meta = TYPE_META[document_type] ?? TYPE_META.unknown;
-  const pct  = confidence != null ? Math.round(confidence * 100) : null;
-  const barColor = pct >= 80 ? "var(--success)" : pct >= 50 ? "var(--warning)" : "var(--danger)";
+  const meta      = TYPE_META[document_type] ?? TYPE_META.unknown;
+  const pct       = confidence != null ? Math.round(confidence * 100) : null;
+  const confColor = pct >= 80 ? "#4ade80" : pct >= 50 ? "#facc15" : "#f87171";
 
   return (
     <div className="analysis-header">
+
+      {/* ── Left: stat boxes ────────────────────────────── */}
       <div className="analysis-header-left">
-        <span
-          className="type-badge"
-          style={{
-            color: meta.color,
-            background: meta.color + "18",
-            borderColor: meta.color + "30",
-          }}
-        >
-          {meta.label}
-        </span>
+        <div className="stat-box" style={{ borderColor: meta.color + "40" }}>
+          <span className="stat-label">Document Type</span>
+          <span className="stat-sep" style={{ background: meta.color + "40" }} />
+          <span className="stat-value" style={{ color: meta.color }}>{meta.label}</span>
+        </div>
 
-        <span className="header-sep" aria-hidden="true" />
-
-        <span className="header-filename" title={filename}>{filename}</span>
-
-        {fieldCount > 0 && (
-          <span className="fields-pill">{fieldCount} fields</span>
-        )}
-      </div>
-
-      <div className="analysis-header-right">
         {pct != null && (
-          <div className="confidence-widget">
-            <span className="confidence-label">Confidence</span>
-            <div className="confidence-track">
-              <div
-                className="confidence-fill"
-                style={{ width: `${pct}%`, background: barColor }}
-              />
-            </div>
-            <span className="confidence-pct">{pct}%</span>
+          <div className="stat-box" style={{ borderColor: confColor + "40" }}>
+            <span className="stat-label">Confidence</span>
+            <span className="stat-sep" />
+            <span className="stat-value" style={{ color: confColor }}>{pct}%</span>
           </div>
         )}
 
+        {fieldCount > 0 && (
+          <div className="stat-box">
+            <span className="stat-label">Fields</span>
+            <span className="stat-sep" />
+            <span className="stat-value">{fieldCount}</span>
+          </div>
+        )}
+      </div>
+
+      {/* ── Center: filename ─────────────────────────────── */}
+      <div className="analysis-header-center">
+        <span className="header-filename" title={filename}>{filename}</span>
+      </div>
+
+      {/* ── Right: display options ───────────────────────── */}
+      <div className="analysis-header-right">
         <div className="split-btns">
           <button
             className={`split-btn${!previewCollapsed && splitMode === "50-50" ? " active" : ""}`}
@@ -88,6 +86,7 @@ export default function AnalysisHeader({ result, fieldCount, splitMode, onSplitC
           <span>{previewCollapsed ? "Preview" : "Hide"}</span>
         </button>
       </div>
+
     </div>
   );
 }
