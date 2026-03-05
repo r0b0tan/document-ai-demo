@@ -7,6 +7,15 @@
 
 const BASE_URL = "";
 
+// Optional API key — set VITE_API_KEY in .env or environment when deploying.
+const API_KEY = import.meta.env.VITE_API_KEY || "";
+
+function authHeaders() {
+  const headers = {};
+  if (API_KEY) headers["X-API-Key"] = API_KEY;
+  return headers;
+}
+
 /**
  * Upload a file and request AI analysis.
  *
@@ -22,6 +31,7 @@ export async function analyzeDocument(file, model = "mistral") {
 
   const response = await fetch(`${BASE_URL}/analyze`, {
     method: "POST",
+    headers: authHeaders(),
     body,
   });
 
@@ -57,7 +67,7 @@ export async function checkHealth() {
  * @returns {Promise<string[]>} Array of model names.
  */
 export async function fetchModels() {
-  const res = await fetch(`${BASE_URL}/models`);
+  const res = await fetch(`${BASE_URL}/models`, { headers: authHeaders() });
   if (!res.ok) return [];
   const data = await res.json();
   return data.models ?? [];
