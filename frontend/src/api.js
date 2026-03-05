@@ -63,8 +63,8 @@ export async function checkHealth() {
 }
 
 /**
- * Fetch available Ollama models from the backend.
- * @returns {Promise<string[]>} Array of model names.
+ * Fetch available models from the backend.
+ * @returns {Promise<Array<{name: string, available: boolean}>>}
  */
 export async function fetchModels() {
   const res = await fetch(`${BASE_URL}/models`, { headers: authHeaders() });

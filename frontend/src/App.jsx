@@ -5,7 +5,10 @@ import UploadOverlay from "./components/UploadOverlay.jsx";
 import Workspace from "./components/Workspace.jsx";
 import "./App.css";
 
-const FALLBACK_MODELS = ["mistral", "llama3", "phi3", "gemma"];
+const FALLBACK_MODELS = [
+  { name: "mistral", available: true },
+  { name: "llama3", available: true },
+];
 
 export default function App() {
   const [result, setResult] = useState(null);
@@ -19,7 +22,10 @@ export default function App() {
     fetchModels().then((m) => {
       if (m.length > 0) {
         setModels(m);
-        if (!m.includes(model)) setModel(m[0]);
+        const available = m.filter((x) => x.available);
+        if (available.length > 0 && !available.some((x) => x.name === model)) {
+          setModel(available[0].name);
+        }
       }
     });
   }, []);

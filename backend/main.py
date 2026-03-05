@@ -18,7 +18,7 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 from starlette.responses import JSONResponse
 
-import ollama
+import llm
 from pipeline import run_pipeline
 from schemas import AnalyzeResponse
 
@@ -36,12 +36,8 @@ ALLOWED_ORIGINS = os.getenv(
 # "X-API-Key" header with this value. Leave unset to disable auth.
 API_KEY = os.getenv("API_KEY")
 
-# Comma-separated whitelist of Ollama model names that clients may use.
-ALLOWED_MODELS = [
-    m.strip()
-    for m in os.getenv("ALLOWED_MODELS", "mistral,llama3,gemma").split(",")
-    if m.strip()
-]
+# Comma-separated whitelist of model names that clients may use.
+ALLOWED_MODELS = [m.strip() for m in os.getenv("ALLOWED_MODELS", "").split(",") if m.strip()]
 
 # Rate limit for the /analyze endpoint (per remote IP).
 ANALYZE_RATE_LIMIT = os.getenv("ANALYZE_RATE_LIMIT", "5/minute")
@@ -77,8 +73,8 @@ app.add_middleware(
 # Maximum upload size: 20 MB
 MAX_FILE_SIZE = 20 * 1024 * 1024
 
-# Ollama model used for classification and extraction
-DEFAULT_MODEL = "mistral"
+# Default model from provider
+DEFAULT_MODEL = llm.get_default_model()
 
 # ── Auth dependency ──────────────────────────────────────────────────────────
 
@@ -105,20 +101,11 @@ def health():
 
 @app.get("/models", dependencies=[Depends(verify_api_key)])
 def list_models():
-    """Return names of locally available Ollama models."""
-    try:
-        response = ollama.list()
-        names = sorted(m.model.split(":")[0] for m in response.models)
-        # deduplicate (same base name with different tags)
-        seen = set()
-        unique = []
-        for n in names:
-            if n not in seen:
-                seen.add(n)
-                unique.append(n)
-        return {"models": unique}
-    except Exception:
-        return {"models": []}
+    """Return available models with their availability status."""
+    models = llm.list_models()
+    if ALLOWED_MODELS:
+        models = [m for m in models if m["name"] in ALLOWED_MODELS]
+    return {"models": models}
 
 
 @app.post("/analyze", response_model=AnalyzeResponse, dependencies=[Depends(verify_api_key)])
@@ -140,7 +127,7 @@ async def analyze(
     # Validate model name format and whitelist
     if not _MODEL_RE.match(model):
         raise HTTPException(status_code=400, detail="Invalid model name.")
-    if model not in ALLOWED_MODELS:
+    if ALLOWED_MODELS and model not in ALLOWED_MODELS:
         raise HTTPException(
             status_code=400,
             detail=f"Model not allowed. Choose from: {', '.join(ALLOWED_MODELS)}",

@@ -1,11 +1,12 @@
 """
-Document classification via Ollama LLM.
+Document classification via LLM.
 Returns document type and an optional confidence score.
 """
 
 import json
 import re
-import ollama
+
+import llm
 
 # Supported document types
 DOCUMENT_TYPES = [
@@ -50,13 +51,8 @@ Document text:
 
 
 def _call_llm(prompt: str, model: str) -> str:
-    """Send a prompt to the local Ollama instance and return the response text."""
-    response = ollama.chat(
-        model=model,
-        messages=[{"role": "user", "content": prompt}],
-        options={"temperature": 0},
-    )
-    return response["message"]["content"].strip()
+    """Send a prompt to the configured LLM provider and return the response text."""
+    return llm.chat(prompt, model)
 
 
 def _parse_json_response(raw: str, fallback: dict) -> dict:

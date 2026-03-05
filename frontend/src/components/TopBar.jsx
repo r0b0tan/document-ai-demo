@@ -22,7 +22,13 @@ export default function TopBar({ model, models, onModelChange, onReset, showRese
             disabled={loading}
           >
             {models.map((m) => (
-              <option key={m} value={m}>{m}</option>
+              <option
+                key={m.name}
+                value={m.name}
+                disabled={!m.available}
+              >
+                {m.name}{!m.available ? " (unavailable)" : ""}
+              </option>
             ))}
           </select>
         </div>

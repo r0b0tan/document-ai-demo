@@ -1,11 +1,12 @@
 """
-Structured field extraction per document type via Ollama LLM.
+Structured field extraction per document type via LLM.
 Each extractor returns a dict of fields specific to that document type.
 """
 
 import json
 import re
-import ollama
+
+import llm
 
 # Max characters sent to the LLM for field extraction
 EXTRACTION_TEXT_LIMIT = 3000
@@ -178,12 +179,7 @@ Document text:
 def _llm_extract(prompt: str, model: str, fallback: dict) -> dict:
     """Call the LLM and parse the JSON response, falling back to the schema defaults."""
     try:
-        response = ollama.chat(
-            model=model,
-            messages=[{"role": "user", "content": prompt}],
-            options={"temperature": 0},
-        )
-        raw = response["message"]["content"].strip()
+        raw = llm.chat(prompt, model)
         return _parse_json(raw, fallback)
     except Exception:
         return fallback
