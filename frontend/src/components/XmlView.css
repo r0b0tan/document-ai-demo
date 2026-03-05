@@ -1,0 +1,73 @@
+.xml-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: #080c10;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.xml-view-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #0d1117;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.xml-view-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+
+.xml-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.xml-copy-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.xml-pre-wrap {
+  overflow: auto;
+  padding: 16px;
+}
+
+.xml-pre-wrap::-webkit-scrollbar { width: 6px; height: 6px; }
+.xml-pre-wrap::-webkit-scrollbar-track { background: transparent; }
+.xml-pre-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.xml-pre-wrap::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+.xml-pre {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--text);
+  white-space: pre;
+  tab-size: 2;
+  margin: 0;
+  padding: 0;
+}
+
+/* Syntax tokens */
+.xt-decl  { color: var(--muted); }
+.xt-tag   { color: #79c0ff; }
+.xt-punct { color: #8b949e; }
