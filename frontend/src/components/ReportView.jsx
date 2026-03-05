@@ -251,6 +251,97 @@ function ContractReport({ data }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   Letter report
+═══════════════════════════════════════════════════════════════════ */
+function LetterReport({ data }) {
+  const m = new Set();
+
+  const sender    = getAndMark(data, m, "sender", "from", "author");
+  const recipient = getAndMark(data, m, "recipient", "to", "addressee");
+  const date      = getAndMark(data, m, "date", "letter_date", "sent_date");
+  const subject   = getAndMark(data, m, "subject", "re", "regarding");
+  const tone      = getAndMark(data, m, "tone", "sentiment");
+  const keyPoints = getAndMark(data, m, "key_points", "main_points", "highlights");
+  const actions   = getAndMark(data, m, "action_items", "actions", "next_steps", "requests");
+  const summary   = getAndMark(data, m, "summary", "abstract");
+  const rest      = remaining(data, m);
+
+  const headerFields = buildObj({ Sender: sender, Recipient: recipient, Date: date, Subject: subject, Tone: tone });
+
+  return (
+    <div className="report-sections">
+      {keys(headerFields) && <Section title="Letter Details"><KeyValueTable data={headerFields} /></Section>}
+
+      {summary && <Section title="Summary"><TextBlock text={summary} /></Section>}
+
+      {keyPoints && Array.isArray(keyPoints) && keyPoints.length > 0 && (
+        <Section title="Key Points">
+          <TagList items={keyPoints} />
+        </Section>
+      )}
+
+      {actions && Array.isArray(actions) && actions.length > 0 && (
+        <Section title="Action Items">
+          <TagList items={actions} variant="outlined" />
+        </Section>
+      )}
+
+      {keys(rest) && <Section title="Additional Fields"><KeyValueTable data={rest} nested /></Section>}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Analysis / Report document
+═══════════════════════════════════════════════════════════════════ */
+function AnalysisReport({ data }) {
+  const m = new Set();
+
+  const title       = getAndMark(data, m, "title", "report_title");
+  const author      = getAndMark(data, m, "author", "prepared_by", "analyst");
+  const date        = getAndMark(data, m, "date", "report_date", "published");
+  const reportType  = getAndMark(data, m, "report_type", "type", "category");
+  const execSummary = getAndMark(data, m, "executive_summary", "summary", "abstract", "overview");
+  const findings    = getAndMark(data, m, "key_findings", "findings", "results", "conclusions");
+  const recs        = getAndMark(data, m, "recommendations", "suggested_actions", "action_items");
+  const dataPoints  = getAndMark(data, m, "data_points", "metrics", "statistics", "figures");
+  const rest        = remaining(data, m);
+
+  const headerFields = buildObj({ Title: title, Author: author, Date: date, Type: reportType });
+
+  return (
+    <div className="report-sections">
+      {keys(headerFields) && <Section title="Report Details"><KeyValueTable data={headerFields} /></Section>}
+
+      {execSummary && <Section title="Executive Summary"><TextBlock text={execSummary} /></Section>}
+
+      {findings && Array.isArray(findings) && findings.length > 0 && (
+        <Section title="Key Findings">
+          <TagList items={findings} />
+        </Section>
+      )}
+
+      {recs && Array.isArray(recs) && recs.length > 0 && (
+        <Section title="Recommendations">
+          <TagList items={recs} variant="outlined" />
+        </Section>
+      )}
+
+      {dataPoints && Array.isArray(dataPoints) && dataPoints.length > 0 && (
+        <Section title="Data Points">
+          {dataPoints.every(dp => typeof dp === "object" && dp !== null)
+            ? <LineItemsTable items={dataPoints} />
+            : <TagList items={dataPoints} />
+          }
+        </Section>
+      )}
+
+      {keys(rest) && <Section title="Additional Fields"><KeyValueTable data={rest} nested /></Section>}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    Generic fallback
 ═══════════════════════════════════════════════════════════════════ */
 function GenericReport({ data }) {
@@ -320,6 +411,22 @@ function computeChips(document_type, data) {
     const partiesArr = Array.isArray(parties) ? parties : parties ? [parties] : null;
     if (partiesArr && partiesArr.length > 0)
       chips.push({ label: "Parties", value: partiesArr.length });
+
+  } else if (document_type === "letter") {
+    const keyPoints = get(data, "key_points", "main_points", "highlights");
+    if (Array.isArray(keyPoints) && keyPoints.length > 0)
+      chips.push({ label: "Key Points", value: keyPoints.length });
+    const actions = get(data, "action_items", "actions", "next_steps");
+    if (Array.isArray(actions) && actions.length > 0)
+      chips.push({ label: "Action Items", value: actions.length });
+
+  } else if (document_type === "report") {
+    const findings = get(data, "key_findings", "findings", "results");
+    if (Array.isArray(findings) && findings.length > 0)
+      chips.push({ label: "Findings", value: findings.length });
+    const recs = get(data, "recommendations", "suggested_actions");
+    if (Array.isArray(recs) && recs.length > 0)
+      chips.push({ label: "Recommendations", value: recs.length });
   }
 
   return chips;
@@ -354,7 +461,7 @@ function StatChips({ chips, loading, onExportJson, onExportXml }) {
 /* ═══════════════════════════════════════════════════════════════════
    Root export
 ═══════════════════════════════════════════════════════════════════ */
-const TYPED = ["invoice", "resume", "contract"];
+const TYPED = ["invoice", "resume", "contract", "letter", "report"];
 
 export default function ReportView({ result, loading }) {
   const { document_type, data, text_preview, filename } = result;
@@ -374,6 +481,8 @@ export default function ReportView({ result, loading }) {
       {document_type === "invoice"  && <InvoiceReport  data={data} />}
       {document_type === "resume"   && <ResumeReport   data={data} />}
       {document_type === "contract" && <ContractReport data={data} />}
+      {document_type === "letter"   && <LetterReport   data={data} />}
+      {document_type === "report"   && <AnalysisReport data={data} />}
       {!TYPED.includes(document_type) && <GenericReport data={data} />}
 
       {text_preview && <TextPreviewAccordion text={text_preview} />}

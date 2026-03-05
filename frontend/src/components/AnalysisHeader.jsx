@@ -6,6 +6,7 @@ const TYPE_META = {
   resume:       { label: "Resume / CV",   color: "#a78bfa" },
   contract:     { label: "Contract",      color: "#34d399" },
   letter:       { label: "Letter",        color: "#fb923c" },
+  report:       { label: "Report",        color: "#f472b6" },
   form:         { label: "Form",          color: "#facc15" },
   xml_document: { label: "XML Document",  color: "#38bdf8" },
   unknown:      { label: "Unknown",       color: "#8b949e" },

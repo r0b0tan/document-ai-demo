@@ -6,6 +6,7 @@ const TYPE_LABELS = {
   resume:       { label: "Resume / CV",  icon: "📋" },
   contract:     { label: "Contract",     icon: "📝" },
   letter:       { label: "Letter",       icon: "✉️"  },
+  report:       { label: "Report",       icon: "📈" },
   form:         { label: "Form",         icon: "📊" },
   xml_document: { label: "XML Document", icon: "🗂️"  },
   unknown:      { label: "Unknown",      icon: "❓" },

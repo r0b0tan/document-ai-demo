@@ -13,6 +13,7 @@ DOCUMENT_TYPES = [
     "resume",
     "contract",
     "letter",
+    "report",
     "form",
     "xml_document",
     "unknown",

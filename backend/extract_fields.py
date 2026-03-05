@@ -23,6 +23,7 @@ def extract_fields(text: str, document_type: str, model: str = "mistral") -> dic
         "resume": _extract_resume,
         "contract": _extract_contract,
         "letter": _extract_letter,
+        "report": _extract_report,
         "form": _extract_form,
         "xml_document": _extract_xml_document,
     }
@@ -38,11 +39,17 @@ def extract_fields(text: str, document_type: str, model: str = "mistral") -> dic
 def _extract_invoice(text: str, model: str) -> dict:
     schema = {
         "vendor": None,
+        "vendor_address": None,
         "invoice_number": None,
         "invoice_date": None,
-        "total_amount": None,
+        "due_date": None,
+        "bill_to": None,
         "currency": None,
         "line_items": [],
+        "subtotal": None,
+        "tax_amount": None,
+        "total_amount": None,
+        "payment_terms": None,
     }
     prompt = _build_prompt(text, schema)
     return _llm_extract(prompt, model, schema)
@@ -53,9 +60,17 @@ def _extract_resume(text: str, model: str) -> dict:
         "name": None,
         "email": None,
         "phone": None,
+        "location": None,
+        "summary": None,
         "skills": [],
-        "companies": [],
-        "education": [],
+        "experience": [
+            {"title": None, "company": None, "dates": None, "description": None}
+        ],
+        "education": [
+            {"degree": None, "institution": None, "dates": None}
+        ],
+        "certifications": [],
+        "languages": [],
     }
     prompt = _build_prompt(text, schema)
     return _llm_extract(prompt, model, schema)
@@ -65,8 +80,12 @@ def _extract_contract(text: str, model: str) -> dict:
     schema = {
         "parties": [],
         "effective_date": None,
-        "termination_terms": None,
+        "expiration_date": None,
         "governing_law": None,
+        "compensation": None,
+        "key_terms": [],
+        "termination_clause": None,
+        "confidentiality": None,
     }
     prompt = _build_prompt(text, schema)
     return _llm_extract(prompt, model, schema)
@@ -78,7 +97,25 @@ def _extract_letter(text: str, model: str) -> dict:
         "recipient": None,
         "date": None,
         "subject": None,
+        "tone": None,
+        "key_points": [],
+        "action_items": [],
         "summary": None,
+    }
+    prompt = _build_prompt(text, schema)
+    return _llm_extract(prompt, model, schema)
+
+
+def _extract_report(text: str, model: str) -> dict:
+    schema = {
+        "title": None,
+        "author": None,
+        "date": None,
+        "report_type": None,
+        "executive_summary": None,
+        "key_findings": [],
+        "recommendations": [],
+        "data_points": [],
     }
     prompt = _build_prompt(text, schema)
     return _llm_extract(prompt, model, schema)
