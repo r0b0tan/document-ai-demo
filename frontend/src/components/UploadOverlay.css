@@ -99,20 +99,49 @@
 }
 
 .browse-btn {
-  padding: 6px 18px;
+  padding: 8px 18px;
   background: transparent;
   border: 1px solid var(--accent);
   border-radius: var(--radius-sm);
   color: var(--accent);
   font-size: 13px;
+  line-height: 1;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
-  margin-top: 4px;
 }
 
 .browse-btn:hover:not(:disabled) {
   background: var(--accent);
   color: var(--bg);
+}
+
+.drop-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+  align-items: stretch;
+}
+
+.paste-btn {
+  padding: 8px 18px;
+  background: transparent;
+  border: 1px solid #4ade80;
+  border-radius: var(--radius-sm);
+  color: #4ade80;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.paste-btn:hover:not(:disabled) {
+  background: #4ade80;
+  color: var(--bg);
+}
+
+.paste-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .drop-hint {

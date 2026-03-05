@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import "./Upload.css";
 
 const ACCEPTED_TYPES = [
@@ -25,6 +25,19 @@ export default function Upload({ onFileSelect, disabled }) {
   const inputRef = useRef(null);
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    function onPaste(e) {
+      if (disabled) return;
+      const items = Array.from(e.clipboardData?.items ?? []);
+      const imageItem = items.find((item) => item.type.startsWith("image/"));
+      if (!imageItem) return;
+      const file = imageItem.getAsFile();
+      if (file) handleFile(file);
+    }
+    document.addEventListener("paste", onPaste);
+    return () => document.removeEventListener("paste", onPaste);
+  }, [disabled, onFileSelect]);
 
   function handleFile(file) {
     setError(null);
@@ -91,6 +104,7 @@ export default function Upload({ onFileSelect, disabled }) {
         <p className="upload-secondary">
           PDF, image (JPG/PNG), plain text, or XML
         </p>
+        <p className="upload-hint">or paste a screenshot with Ctrl+V</p>
         <button className="upload-btn" type="button" disabled={disabled} tabIndex={-1}>
           Browse files
         </button>

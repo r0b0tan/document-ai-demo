@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import "./UploadOverlay.css";
 
 const ACCEPTED_TYPES = [
@@ -19,7 +19,7 @@ export default function UploadOverlay({ onFileSelect, disabled, loading, file, m
   const [dragging, setDragging]   = useState(false);
   const [fileError, setFileError] = useState(null);
 
-  function handleFile(f) {
+  const handleFile = useCallback(function handleFile(f) {
     setFileError(null);
     if (!f) return;
     const ok =
@@ -30,7 +30,20 @@ export default function UploadOverlay({ onFileSelect, disabled, loading, file, m
       return;
     }
     onFileSelect(f);
-  }
+  }, [onFileSelect]);
+
+  useEffect(() => {
+    function onPaste(e) {
+      if (disabled) return;
+      const items = Array.from(e.clipboardData?.items ?? []);
+      const imageItem = items.find((item) => item.type.startsWith("image/"));
+      if (!imageItem) return;
+      const file = imageItem.getAsFile();
+      if (file) handleFile(file);
+    }
+    document.addEventListener("paste", onPaste);
+    return () => document.removeEventListener("paste", onPaste);
+  }, [disabled, handleFile]);
 
   function onDragOver(e) {
     e.preventDefault();
@@ -44,6 +57,26 @@ export default function UploadOverlay({ onFileSelect, disabled, loading, file, m
     setDragging(false);
     if (disabled) return;
     handleFile(e.dataTransfer.files?.[0]);
+  }
+
+  async function onPasteClick(e) {
+    e.stopPropagation();
+    if (disabled) return;
+    try {
+      const clipboardItems = await navigator.clipboard.read();
+      for (const item of clipboardItems) {
+        const imageType = item.types.find((t) => t.startsWith("image/"));
+        if (imageType) {
+          const blob = await item.getType(imageType);
+          const file = new File([blob], "clipboard.png", { type: imageType });
+          handleFile(file);
+          return;
+        }
+      }
+      setFileError("No image found in clipboard");
+    } catch {
+      setFileError("Clipboard access denied — try Ctrl+V instead");
+    }
   }
 
   function onClick() {
@@ -104,10 +137,15 @@ export default function UploadOverlay({ onFileSelect, disabled, loading, file, m
                 {dragging ? "Release to upload" : "Drag & drop a document"}
               </p>
               <p className="drop-secondary">or</p>
-              <button className="browse-btn" type="button" disabled={disabled} tabIndex={-1}>
-                Browse files
-              </button>
-              <p className="drop-hint">PDF · JPG · PNG · TXT · XML</p>
+              <div className="drop-buttons">
+                <button className="browse-btn" type="button" disabled={disabled} tabIndex={-1}>
+                  Browse files
+                </button>
+                <button className="paste-btn" type="button" disabled={disabled} tabIndex={-1} onClick={onPasteClick}>
+                  Paste screenshot
+                </button>
+              </div>
+              <p className="drop-hint">PDF · JPG · PNG · TXT · XML · or Ctrl+V</p>
             </>
           )}
         </div>

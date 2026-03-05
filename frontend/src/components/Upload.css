@@ -69,6 +69,12 @@
   color: #fff;
 }
 
+.upload-hint {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin: 0;
+}
+
 .upload-error {
   margin-top: 0.6rem;
   color: #f87171;
