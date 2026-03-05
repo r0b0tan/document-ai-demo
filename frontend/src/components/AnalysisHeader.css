@@ -14,7 +14,7 @@
 .analysis-header-left {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 16px;
 }
 
 .stat-box {
@@ -25,7 +25,7 @@
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  overflow: hidden;
+  overflow: visible;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -52,6 +52,93 @@
   font-weight: 600;
   color: var(--text);
   letter-spacing: 0.01em;
+}
+
+/* Detected Type — slightly stronger border */
+.stat-box--primary {
+  border-width: 1px;
+}
+
+/* Natural-phrase badge (e.g. "6 fields extracted") */
+.stat-box--natural {
+  background: transparent;
+  border-color: transparent;
+}
+
+.stat-natural {
+  padding: 0 4px;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.stat-natural-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Model name — same style as colored doc-type value */
+.stat-model {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.01em;
+}
+
+/* Confidence stat box — same height as all other boxes */
+.stat-box--conf {
+  height: 28px;
+}
+
+.stat-conf-value {
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Model Confidence label + info icon ───────────────── */
+.conf-label-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+}
+
+.conf-tooltip-anchor {
+  display: inline-flex;
+  align-items: center;
+  color: var(--muted);
+  cursor: default;
+  position: relative;
+}
+
+.conf-tooltip-anchor:hover .conf-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.conf-tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  width: 230px;
+  background: #1a2233;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted);
+  line-height: 1.55;
+  white-space: normal;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s, transform 0.15s;
+  z-index: 100;
+  box-shadow: var(--shadow-md);
 }
 
 /* ── Center: filename ─────────────────────────────────── */
@@ -161,5 +248,15 @@
 
   .analysis-header-left {
     flex-wrap: wrap;
+  }
+
+  .conf-tooltip {
+    left: auto;
+    right: 0;
+    transform: translateY(-4px);
+  }
+
+  .conf-tooltip-anchor:hover .conf-tooltip {
+    transform: translateY(0);
   }
 }

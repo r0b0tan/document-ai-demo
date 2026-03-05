@@ -9,7 +9,7 @@ function countFields(data) {
   return Object.keys(data).length;
 }
 
-export default function Workspace({ result, file }) {
+export default function Workspace({ result, file, model }) {
   const [splitMode, setSplitMode]               = useState("50-50");
   const [previewCollapsed, setPreviewCollapsed] = useState(false);
 
@@ -25,6 +25,7 @@ export default function Workspace({ result, file }) {
     <div className="workspace">
       <AnalysisHeader
         result={result}
+        model={model}
         fieldCount={fieldCount}
         splitMode={splitMode}
         onSplitChange={setSplitMode}

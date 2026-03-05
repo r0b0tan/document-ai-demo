@@ -269,9 +269,16 @@ const TYPED = ["invoice", "resume", "contract"];
 
 export default function ReportView({ result }) {
   const { document_type, data, text_preview } = result;
+  const fieldCount = data && typeof data === "object" ? Object.keys(data).length : 0;
 
   return (
     <div className="report-view">
+      {fieldCount > 0 && (
+        <div className="report-fields-meta">
+          <span className="report-fields-num">{fieldCount}</span>
+          {" fields extracted"}
+        </div>
+      )}
       {document_type === "invoice"  && <InvoiceReport  data={data} />}
       {document_type === "resume"   && <ResumeReport   data={data} />}
       {document_type === "contract" && <ContractReport data={data} />}

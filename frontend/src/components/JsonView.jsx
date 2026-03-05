@@ -24,10 +24,12 @@ export default function JsonView({ data }) {
           {copied ? "Copied!" : "Copy"}
         </button>
       </div>
-      <pre
-        className="json-pre"
-        dangerouslySetInnerHTML={{ __html: highlight(json) }}
-      />
+      <div className="json-pre-wrap">
+        <pre
+          className="json-pre"
+          dangerouslySetInnerHTML={{ __html: highlight(json) }}
+        />
+      </div>
     </div>
   );
 }

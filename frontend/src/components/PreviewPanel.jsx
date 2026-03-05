@@ -1,9 +1,13 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import "./PreviewPanel.css";
+
+const ZOOM_LEVELS = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
 export default function PreviewPanel({ file, result, collapsed, onExpand }) {
   const isPdf   = file?.type === "application/pdf";
   const isImage = file?.type?.startsWith("image/");
+  const [zoom, setZoom]         = useState(1);
+  const [fitWidth, setFitWidth] = useState(false);
 
   const objectUrl = useMemo(() => {
     if (file && (isPdf || isImage)) return URL.createObjectURL(file);
@@ -21,15 +25,68 @@ export default function PreviewPanel({ file, result, collapsed, onExpand }) {
     );
   }
 
+  const fileType = isPdf ? "PDF" : isImage ? "Image" : "Text";
+
+  function zoomIn() {
+    setFitWidth(false);
+    setZoom((z) => {
+      const idx = ZOOM_LEVELS.indexOf(z);
+      return idx < ZOOM_LEVELS.length - 1 ? ZOOM_LEVELS[idx + 1] : z;
+    });
+  }
+
+  function zoomOut() {
+    setFitWidth(false);
+    setZoom((z) => {
+      const idx = ZOOM_LEVELS.indexOf(z);
+      return idx > 0 ? ZOOM_LEVELS[idx - 1] : z;
+    });
+  }
+
+  function handleFitWidth() {
+    setFitWidth((v) => !v);
+    setZoom(1);
+  }
+
   return (
     <div className="preview-panel">
       <div className="preview-toolbar">
-        <span className="preview-file-badge">
-          {isPdf ? "PDF" : isImage ? "Image" : "Text"}
-        </span>
+        <span className="preview-file-badge">{fileType}</span>
+        <span className="preview-toolbar-sep" aria-hidden="true" />
         <span className="preview-toolbar-filename" title={result?.filename}>
           {result?.filename}
         </span>
+
+        {isImage && (
+          <div className="preview-zoom-controls">
+            <button
+              className="preview-zoom-btn"
+              onClick={zoomOut}
+              title="Zoom out"
+              disabled={!fitWidth && zoom <= ZOOM_LEVELS[0]}
+            >
+              <IconMinus />
+            </button>
+            <span className="preview-zoom-level">
+              {fitWidth ? "Fit" : `${Math.round(zoom * 100)}%`}
+            </span>
+            <button
+              className="preview-zoom-btn"
+              onClick={zoomIn}
+              title="Zoom in"
+              disabled={!fitWidth && zoom >= ZOOM_LEVELS[ZOOM_LEVELS.length - 1]}
+            >
+              <IconPlus />
+            </button>
+            <button
+              className={`preview-fit-btn${fitWidth ? " active" : ""}`}
+              onClick={handleFitWidth}
+              title="Fit width"
+            >
+              <IconFitWidth />
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="preview-content">
@@ -43,7 +100,15 @@ export default function PreviewPanel({ file, result, collapsed, onExpand }) {
 
         {isImage && objectUrl && (
           <div className="preview-image-wrap">
-            <img src={objectUrl} alt="Document preview" className="preview-image" />
+            <img
+              src={objectUrl}
+              alt="Document preview"
+              className="preview-image"
+              style={fitWidth
+                ? { width: "100%", height: "auto", maxWidth: "none", transform: "none" }
+                : { transform: `scale(${zoom})`, transformOrigin: "top center" }
+              }
+            />
           </div>
         )}
 
@@ -78,6 +143,31 @@ function IconDoc() {
     <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="var(--border)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="var(--border)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function IconMinus() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+      <path d="M5 12h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconPlus() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+      <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconFitWidth() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+      <path d="M4 6h16M4 18h16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M4 12h16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   );
 }

@@ -47,7 +47,7 @@ export default function App() {
       />
       <main className="app-main">
         {result ? (
-          <Workspace result={result} file={file} />
+          <Workspace result={result} file={file} model={model} />
         ) : (
           <UploadOverlay
             onFileSelect={handleFileSelect}

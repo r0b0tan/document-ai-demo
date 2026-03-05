@@ -1,3 +1,4 @@
+import ConfidenceRing from "./ConfidenceRing.jsx";
 import "./AnalysisHeader.css";
 
 const TYPE_META = {
@@ -10,46 +11,58 @@ const TYPE_META = {
   unknown:      { label: "Unknown",       color: "#8b949e" },
 };
 
-export default function AnalysisHeader({ result, fieldCount, splitMode, onSplitChange, previewCollapsed, onTogglePreview }) {
+export default function AnalysisHeader({ result, model, fieldCount, splitMode, onSplitChange, previewCollapsed, onTogglePreview }) {
   const { filename, document_type, confidence } = result;
-  const meta      = TYPE_META[document_type] ?? TYPE_META.unknown;
-  const pct       = confidence != null ? Math.round(confidence * 100) : null;
-  const confColor = pct >= 80 ? "#4ade80" : pct >= 50 ? "#facc15" : "#f87171";
+  const meta = TYPE_META[document_type] ?? TYPE_META.unknown;
 
   return (
     <div className="analysis-header">
 
-      {/* ── Left: stat boxes ────────────────────────────── */}
+      {/* ── Left: stat boxes ────────────────────────── */}
       <div className="analysis-header-left">
-        <div className="stat-box" style={{ borderColor: meta.color + "40" }}>
-          <span className="stat-label">Document Type</span>
+        <div className="stat-box stat-box--primary" style={{ borderColor: meta.color + "50" }}>
+          <span className="stat-label">Detected Type</span>
           <span className="stat-sep" style={{ background: meta.color + "40" }} />
           <span className="stat-value" style={{ color: meta.color }}>{meta.label}</span>
         </div>
 
-        {pct != null && (
-          <div className="stat-box" style={{ borderColor: confColor + "40" }}>
-            <span className="stat-label">Confidence</span>
+        {model && (
+          <div className="stat-box">
+            <span className="stat-label">Model Used</span>
             <span className="stat-sep" />
-            <span className="stat-value" style={{ color: confColor }}>{pct}%</span>
+            <span className="stat-value stat-model">{model}</span>
           </div>
         )}
 
-        {fieldCount > 0 && (
-          <div className="stat-box">
-            <span className="stat-label">Fields</span>
+        {confidence != null && (
+          <div className="stat-box stat-box--conf">
+            <span className="stat-label conf-label-wrap">
+              Model Confidence
+              <span
+                className="conf-tooltip-anchor"
+                aria-label="Confidence score estimated by the language model during document classification and structured data extraction."
+              >
+                <IconInfo />
+                <span className="conf-tooltip">
+                  Confidence score estimated by the language model during
+                  document classification and structured data extraction.
+                </span>
+              </span>
+            </span>
             <span className="stat-sep" />
-            <span className="stat-value">{fieldCount}</span>
+            <span className="stat-value stat-conf-value">
+              <ConfidenceRing value={confidence} />
+            </span>
           </div>
         )}
       </div>
 
-      {/* ── Center: filename ─────────────────────────────── */}
+      {/* ── Center: filename ─────────────────────────── */}
       <div className="analysis-header-center">
         <span className="header-filename" title={filename}>{filename}</span>
       </div>
 
-      {/* ── Right: display options ───────────────────────── */}
+      {/* ── Right: display options ───────────────────── */}
       <div className="analysis-header-right">
         <div className="split-btns">
           <button
@@ -88,6 +101,15 @@ export default function AnalysisHeader({ result, fieldCount, splitMode, onSplitC
       </div>
 
     </div>
+  );
+}
+
+function IconInfo() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M12 8v1M12 11v5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
   );
 }
 
