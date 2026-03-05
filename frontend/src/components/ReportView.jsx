@@ -243,7 +243,7 @@ function GenericReport({ data }) {
    Text preview accordion
 ═══════════════════════════════════════════════════════════════════ */
 function TextPreviewAccordion({ text }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   return (
     <div className="text-accordion">
       <button className="text-accordion-toggle" onClick={() => setOpen((v) => !v)}>

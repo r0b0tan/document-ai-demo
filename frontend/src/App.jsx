@@ -2,7 +2,6 @@ import { useState } from "react";
 import { analyzeDocument } from "./api.js";
 import TopBar from "./components/TopBar.jsx";
 import UploadOverlay from "./components/UploadOverlay.jsx";
-import LoadingSkeleton from "./components/LoadingSkeleton.jsx";
 import Workspace from "./components/Workspace.jsx";
 import "./App.css";
 
@@ -47,9 +46,7 @@ export default function App() {
         loading={loading}
       />
       <main className="app-main">
-        {loading ? (
-          <LoadingSkeleton file={file} model={model} />
-        ) : result ? (
+        {result ? (
           <Workspace result={result} file={file} />
         ) : (
           <UploadOverlay

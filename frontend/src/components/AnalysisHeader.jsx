@@ -42,6 +42,7 @@ export default function AnalysisHeader({ result, fieldCount, splitMode, onSplitC
       <div className="analysis-header-right">
         {pct != null && (
           <div className="confidence-widget">
+            <span className="confidence-label">Confidence</span>
             <div className="confidence-track">
               <div
                 className="confidence-fill"
