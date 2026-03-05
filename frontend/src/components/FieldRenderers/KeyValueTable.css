@@ -1,0 +1,78 @@
+.kv-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.kv-row {
+  border-bottom: 1px solid var(--border);
+}
+
+.kv-row:last-child {
+  border-bottom: none;
+}
+
+.kv-key {
+  width: 36%;
+  padding: 8px 16px 8px 0;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.kv-value {
+  padding: 8px 0;
+  font-size: 13px;
+  color: var(--text);
+  vertical-align: top;
+  word-break: break-word;
+}
+
+/* ── Highlight variant (totals) ───────────────────────── */
+.kv-table--highlight .kv-row:last-child .kv-key,
+.kv-table--highlight .kv-row:last-child .kv-value {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.kv-table--highlight .kv-row:last-child {
+  border-top: 1px solid var(--border);
+}
+
+/* ── Value types ──────────────────────────────────────── */
+.kv-null   { color: var(--border); }
+.kv-number { font-variant-numeric: tabular-nums; color: var(--text); }
+.kv-string { color: var(--text); }
+
+.kv-bool--true  { color: var(--success); font-weight: 500; }
+.kv-bool--false { color: var(--muted); }
+
+.kv-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.kv-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--text);
+}
+
+.kv-nested {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.kv-nested-item {
+  padding: 8px;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}

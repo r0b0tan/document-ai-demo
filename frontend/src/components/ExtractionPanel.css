@@ -1,0 +1,51 @@
+.extraction-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: #0b0f14;
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+.extraction-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid #1f2a36;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #11161d;
+}
+
+.extraction-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8b949e;
+  font-weight: 600;
+}
+
+.extraction-count {
+  font-size: 11px;
+  color: #4da3ff;
+  background: rgba(77, 163, 255, 0.1);
+  border: 1px solid rgba(77, 163, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+/* ── Content ─────────────────────────────────────────────────── */
+.extraction-content {
+  flex: 1;
+  overflow: auto;
+  padding: 24px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 1000px) {
+  .extraction-panel {
+    height: auto;
+    min-height: 400px;
+  }
+}

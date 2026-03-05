@@ -1,0 +1,139 @@
+.loading-skeleton {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Shimmer animation ────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skel-block {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--border) 25%, var(--surface) 50%, var(--border) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* ── Fake header ──────────────────────────────────────── */
+.skel-header {
+  height: 56px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.skel-left,
+.skel-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ── Fake body ────────────────────────────────────────── */
+.skel-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+
+.skel-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.skel-data {
+  background: var(--surface-2);
+  border-right: 1px solid var(--border);
+}
+
+.skel-tab-bar {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.skel-fields {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skel-section-head {
+  width: 80px;
+  height: 10px;
+  margin-bottom: 4px;
+}
+
+.skel-field-row {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.skel-preview {
+  background: var(--bg);
+}
+
+.skel-preview-placeholder {
+  flex: 1;
+  margin: 24px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(90deg, var(--border) 25%, var(--surface) 50%, var(--border) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* ── Status bar ───────────────────────────────────────── */
+.skel-status {
+  flex-shrink: 0;
+  height: 44px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.skel-status strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.skel-spinner {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

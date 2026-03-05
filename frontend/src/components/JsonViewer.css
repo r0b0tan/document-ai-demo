@@ -1,19 +1,20 @@
 .json-viewer {
-  background: #0d1117;
-  color: #e2e8f0;
-  border-radius: 8px;
-  padding: 1rem 1.2rem;
-  font-size: 0.82rem;
-  line-height: 1.6;
-  overflow: auto;
-  max-height: 600px;
-  border: 1px solid #1e293b;
+  background: transparent;
+  color: #e6edf3;
+  font-family: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+  font-size: 13px;
+  line-height: 1.65;
   white-space: pre;
   tab-size: 2;
+  overflow: visible;
+  padding: 0;
+  margin: 0;
+  border: none;
+  min-width: 0;
 }
 
-.json-key     { color: #7dd3fc; } /* sky-300  — object keys   */
-.json-string  { color: #86efac; } /* green-300 — string values */
-.json-number  { color: #fda4af; } /* rose-300 — numbers       */
-.json-boolean { color: #f9a8d4; } /* pink-300 — booleans      */
-.json-null    { color: #94a3b8; } /* slate-400 — null         */
+.json-key     { color: #79c0ff; }   /* blue     — object keys    */
+.json-string  { color: #a5d6a7; }   /* green    — string values  */
+.json-number  { color: #ff9e64; }   /* orange   — numbers        */
+.json-boolean { color: #f78166; }   /* coral    — booleans       */
+.json-null    { color: #8b949e; }   /* muted    — null           */

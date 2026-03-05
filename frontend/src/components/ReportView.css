@@ -1,0 +1,113 @@
+.report-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Sections ─────────────────────────────────────────── */
+.report-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.report-section {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.report-section:first-child {
+  padding-top: 0;
+}
+
+.report-section:last-child {
+  border-bottom: none;
+}
+
+.report-section-head {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+/* ── Text block ───────────────────────────────────────── */
+.report-text-block {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.75;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ── Resume hero ──────────────────────────────────────── */
+.resume-hero {
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
+}
+
+.resume-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+
+.resume-contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.contact-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* ── Text preview accordion ───────────────────────────── */
+.text-accordion {
+  margin-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.text-accordion-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: color 0.15s;
+}
+
+.text-accordion-toggle:hover {
+  color: var(--text);
+}
+
+.text-accordion-content {
+  padding: 0 0 16px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--font-mono);
+}

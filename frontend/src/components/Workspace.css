@@ -1,0 +1,29 @@
+.workspace {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: wsIn 0.22s ease;
+}
+
+@keyframes wsIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.workspace-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  overflow: hidden;
+  transition: grid-template-columns 0.2s ease;
+}
+
+@media (max-width: 999px) {
+  .workspace-body {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 1fr auto;
+    overflow-y: auto;
+  }
+}

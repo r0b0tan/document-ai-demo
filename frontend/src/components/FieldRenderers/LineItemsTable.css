@@ -1,0 +1,42 @@
+.li-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.li-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.li-th {
+  padding: 8px 12px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+
+.li-row {
+  border-bottom: 1px solid var(--border);
+}
+
+.li-row:last-child {
+  border-bottom: none;
+}
+
+.li-row:nth-child(even) {
+  background: var(--surface);
+}
+
+.li-td {
+  padding: 9px 12px;
+  color: var(--text);
+  vertical-align: top;
+}
