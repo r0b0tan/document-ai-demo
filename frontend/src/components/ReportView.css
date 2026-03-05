@@ -4,20 +4,46 @@
   gap: 0;
 }
 
-/* ── Fields meta ──────────────────────────────────────── */
-.report-fields-meta {
-  font-size: 11px;
-  font-weight: 400;
-  color: var(--muted);
+/* ── Stat chips ───────────────────────────────────────── */
+.stat-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--border);
-  margin-bottom: 0;
 }
 
-.report-fields-num {
+.stat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #0f141a;
+  border: 1px solid #1f2a36;
+  border-radius: 8px;
+  padding: 6px 10px;
+  white-space: nowrap;
+}
+
+.stat-chip-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+  letter-spacing: 0.01em;
+}
+
+.stat-chip-value {
   font-size: 12px;
   font-weight: 700;
   color: var(--text);
+  letter-spacing: 0.01em;
+}
+
+.stat-chips-loading {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+  font-style: italic;
+  padding: 6px 2px;
 }
 
 /* ── Sections ─────────────────────────────────────────── */

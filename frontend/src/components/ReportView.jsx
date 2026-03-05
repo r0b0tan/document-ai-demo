@@ -263,22 +263,77 @@ function TextPreviewAccordion({ text }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   Stat chips
+═══════════════════════════════════════════════════════════════════ */
+function computeChips(document_type, data) {
+  const chips = [];
+  if (!data || typeof data !== "object") return chips;
+
+  const fieldCount = Object.keys(data).length;
+  if (fieldCount > 0) chips.push({ label: "Fields Extracted", value: fieldCount });
+
+  if (document_type === "invoice") {
+    const lineItems = get(data, "line_items", "items", "services", "products");
+    if (Array.isArray(lineItems) && lineItems.length > 0)
+      chips.push({ label: "Line Items", value: lineItems.length });
+
+  } else if (document_type === "resume") {
+    const skills = get(data, "skills", "technical_skills", "technologies", "tools", "competencies");
+    const skillArr = Array.isArray(skills)
+      ? skills
+      : typeof skills === "string"
+        ? skills.split(",").map((s) => s.trim()).filter(Boolean)
+        : null;
+    if (skillArr && skillArr.length > 0)
+      chips.push({ label: "Skills", value: skillArr.length });
+
+    const exp = get(data, "work_experience", "experience", "employment", "work_history", "jobs");
+    if (Array.isArray(exp) && exp.length > 0)
+      chips.push({ label: "Companies", value: exp.length });
+
+  } else if (document_type === "contract") {
+    const parties = get(data, "parties", "party_names", "signatories", "contracting_parties");
+    const partiesArr = Array.isArray(parties) ? parties : parties ? [parties] : null;
+    if (partiesArr && partiesArr.length > 0)
+      chips.push({ label: "Parties", value: partiesArr.length });
+  }
+
+  return chips;
+}
+
+function StatChips({ chips, loading }) {
+  if (loading) {
+    return (
+      <div className="stat-chips">
+        <span className="stat-chips-loading">Extracting fields…</span>
+      </div>
+    );
+  }
+  if (!chips || chips.length === 0) return null;
+  return (
+    <div className="stat-chips">
+      {chips.map(({ label, value }) => (
+        <div key={label} className="stat-chip">
+          <span className="stat-chip-label">{label}</span>
+          <span className="stat-chip-value">{value}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    Root export
 ═══════════════════════════════════════════════════════════════════ */
 const TYPED = ["invoice", "resume", "contract"];
 
-export default function ReportView({ result }) {
+export default function ReportView({ result, loading }) {
   const { document_type, data, text_preview } = result;
-  const fieldCount = data && typeof data === "object" ? Object.keys(data).length : 0;
+  const chips = computeChips(document_type, data);
 
   return (
     <div className="report-view">
-      {fieldCount > 0 && (
-        <div className="report-fields-meta">
-          <span className="report-fields-num">{fieldCount}</span>
-          {" fields extracted"}
-        </div>
-      )}
+      <StatChips chips={chips} loading={loading} />
       {document_type === "invoice"  && <InvoiceReport  data={data} />}
       {document_type === "resume"   && <ResumeReport   data={data} />}
       {document_type === "contract" && <ContractReport data={data} />}
