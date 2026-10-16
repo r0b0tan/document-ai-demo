@@ -19,8 +19,9 @@ export default function TopBar({ model, models, onModelChange, onReset, showRese
             className="model-select"
             value={model}
             onChange={(e) => onModelChange(e.target.value)}
-            disabled={loading}
+            disabled={loading || models.length === 0}
           >
+            {models.length === 0 && <option value="">Default</option>}
             {models.map((m) => (
               <option
                 key={m.name}

@@ -20,14 +20,14 @@ function authHeaders() {
  * Upload a file and request AI analysis.
  *
  * @param {File}   file   - The file object from the input / drop event.
- * @param {string} model  - Ollama model name (default: "mistral").
+ * @param {string} model  - Model name; omit to use the backend's default.
  * @returns {Promise<Object>} Parsed AnalyzeResponse JSON.
  * @throws {Error} with a human-readable message on HTTP or network failure.
  */
-export async function analyzeDocument(file, model = "mistral") {
+export async function analyzeDocument(file, model = "") {
   const body = new FormData();
   body.append("file", file);
-  body.append("model", model);
+  if (model) body.append("model", model);
 
   const response = await fetch(`${BASE_URL}/analyze`, {
     method: "POST",
@@ -63,12 +63,16 @@ export async function checkHealth() {
 }
 
 /**
- * Fetch available models from the backend.
- * @returns {Promise<Array<{name: string, available: boolean}>>}
+ * Fetch available models and the backend's default model.
+ * @returns {Promise<{models: Array<{name: string, available: boolean}>, defaultModel: string}>}
  */
 export async function fetchModels() {
-  const res = await fetch(`${BASE_URL}/models`, { headers: authHeaders() });
-  if (!res.ok) return [];
-  const data = await res.json();
-  return data.models ?? [];
+  try {
+    const res = await fetch(`${BASE_URL}/models`, { headers: authHeaders() });
+    if (!res.ok) return { models: [], defaultModel: "" };
+    const data = await res.json();
+    return { models: data.models ?? [], defaultModel: data.default ?? "" };
+  } catch {
+    return { models: [], defaultModel: "" };
+  }
 }

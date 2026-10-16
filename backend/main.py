@@ -73,8 +73,10 @@ app.add_middleware(
 # Maximum upload size: 20 MB
 MAX_FILE_SIZE = 20 * 1024 * 1024
 
-# Default model from provider
+# Default model: provider default, unless the whitelist excludes it
 DEFAULT_MODEL = llm.get_default_model()
+if ALLOWED_MODELS and DEFAULT_MODEL not in ALLOWED_MODELS:
+    DEFAULT_MODEL = ALLOWED_MODELS[0]
 
 # ── Auth dependency ──────────────────────────────────────────────────────────
 
@@ -90,8 +92,9 @@ async def verify_api_key(request: Request):
 
 # ── Endpoints ────────────────────────────────────────────────────────────────
 
-# Model name validation: alphanumeric, hyphens, underscores, dots, colons
-_MODEL_RE = re.compile(r"^[a-zA-Z0-9._:-]{1,64}$")
+# Model name validation: alphanumeric, hyphens, underscores, dots, colons, slashes
+# (Groq uses namespaced ids like "qwen/qwen3-32b")
+_MODEL_RE = re.compile(r"^[a-zA-Z0-9._:/-]{1,128}$")
 
 
 @app.get("/health")
@@ -105,7 +108,7 @@ def list_models():
     models = llm.list_models()
     if ALLOWED_MODELS:
         models = [m for m in models if m["name"] in ALLOWED_MODELS]
-    return {"models": models}
+    return {"models": models, "default": DEFAULT_MODEL}
 
 
 @app.post("/analyze", response_model=AnalyzeResponse, dependencies=[Depends(verify_api_key)])

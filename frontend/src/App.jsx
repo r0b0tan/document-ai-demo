@@ -5,28 +5,26 @@ import UploadOverlay from "./components/UploadOverlay.jsx";
 import Workspace from "./components/Workspace.jsx";
 import "./App.css";
 
-const FALLBACK_MODELS = [
-  { name: "mistral", available: true },
-  { name: "llama3", available: true },
-];
-
 export default function App() {
   const [result, setResult] = useState(null);
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [model, setModel] = useState("mistral");
-  const [models, setModels] = useState(FALLBACK_MODELS);
+  // Empty model = let the backend use its configured default
+  const [model, setModel] = useState("");
+  const [models, setModels] = useState([]);
 
   useEffect(() => {
-    fetchModels().then((m) => {
-      if (m.length > 0) {
-        setModels(m);
-        const available = m.filter((x) => x.available);
-        if (available.length > 0 && !available.some((x) => x.name === model)) {
-          setModel(available[0].name);
-        }
-      }
+    fetchModels().then(({ models: m, defaultModel }) => {
+      setModels(m);
+      // Always pick a model from the backend's list so we never send one it rejects
+      const available = m.filter((x) => x.available);
+      const pick =
+        available.find((x) => x.name === defaultModel) ??
+        available[0] ??
+        m.find((x) => x.name === defaultModel) ??
+        m[0];
+      setModel(pick?.name ?? "");
     });
   }, []);
 

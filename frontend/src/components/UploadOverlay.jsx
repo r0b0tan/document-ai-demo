@@ -123,7 +123,7 @@ export default function UploadOverlay({ onFileSelect, disabled, loading, file, m
               <span className="drop-zone-spinner" />
               <p className="drop-loading-primary">Analyzing&hellip;</p>
               <p className="drop-loading-secondary">
-                {file?.name} &middot; {model}
+                {file?.name} &middot; {model || "default model"}
               </p>
             </div>
           ) : (

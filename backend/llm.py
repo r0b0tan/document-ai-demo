@@ -16,7 +16,7 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 # Default models per provider
 DEFAULT_MODELS = {
     "ollama": "mistral",
-    "groq": "mistral-saba-24b",
+    "groq": "llama-3.3-70b-versatile",
 }
 
 
