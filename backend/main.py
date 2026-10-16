@@ -106,8 +106,18 @@ def health():
 def list_models():
     """Return available models with their availability status."""
     models = llm.list_models()
-    if ALLOWED_MODELS:
+    if not models:
+        logger.warning("Provider '%s' returned no models (check API key / connectivity).", llm.LLM_PROVIDER)
+    elif ALLOWED_MODELS:
+        offered = models
         models = [m for m in models if m["name"] in ALLOWED_MODELS]
+        if not models:
+            logger.warning(
+                "None of ALLOWED_MODELS (%s) is offered by provider '%s'. Currently offered: %s",
+                ", ".join(ALLOWED_MODELS),
+                llm.LLM_PROVIDER,
+                ", ".join(m["name"] for m in offered),
+            )
     return {"models": models, "default": DEFAULT_MODEL}
 
 
